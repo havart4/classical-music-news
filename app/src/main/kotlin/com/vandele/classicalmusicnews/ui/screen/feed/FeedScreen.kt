@@ -43,7 +43,9 @@ import com.vandele.classicalmusicnews.ui.components.PlaceholderBox
 import com.vandele.classicalmusicnews.ui.rememberTextHeight
 import com.vandele.classicalmusicnews.ui.theme.CmnSpacing
 import com.vandele.classicalmusicnews.ui.toMediumString
+import eu.bambooapps.material3.pullrefresh.PullRefreshDefaults
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
+import eu.bambooapps.material3.pullrefresh.PullRefreshIndicatorDefaults
 import eu.bambooapps.material3.pullrefresh.pullRefresh
 import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 
@@ -84,9 +86,12 @@ private fun ArticlesContent(
     contentPadding: PaddingValues,
     navigateToDetail: (id: String) -> Unit,
 ) {
+    val topPadding = contentPadding.calculateTopPadding()
     val pullRefreshState = rememberPullRefreshState(
         refreshing = content.isPullRefreshing,
         onRefresh = content.onPullRefresh,
+        refreshThreshold = PullRefreshDefaults.RefreshThreshold + topPadding,
+        refreshingOffset = PullRefreshDefaults.RefreshingOffset + topPadding,
     )
     Box {
         LazyColumn(
@@ -107,6 +112,9 @@ private fun ArticlesContent(
             refreshing = content.isPullRefreshing,
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
+            colors = PullRefreshIndicatorDefaults.colors(
+                contentColor = MaterialTheme.colorScheme.primary,
+            ),
         )
     }
 }
