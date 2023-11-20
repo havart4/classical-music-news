@@ -3,6 +3,7 @@ package com.vandele.classicalmusicnews.data.local.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.vandele.classicalmusicnews.model.Article
+import java.time.Instant
 
 @Entity(tableName = ARTICLE_TABLE_NAME)
 data class ArticleEntity(
@@ -10,10 +11,9 @@ data class ArticleEntity(
     val id: String,
 
     val author: String,
-    val feedTitle: String,
     val image: String,
     val link: String,
-    val pubDate: Long,
+    val pubDate: Instant,
     val title: String,
 )
 
@@ -21,7 +21,6 @@ const val ARTICLE_TABLE_NAME = "Article"
 
 fun ArticleEntity.toArticle() = Article(
     author = author,
-    feedTitle = feedTitle,
     id = id,
     image = image,
     link = link,
