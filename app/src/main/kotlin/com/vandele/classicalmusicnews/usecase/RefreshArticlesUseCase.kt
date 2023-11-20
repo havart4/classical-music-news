@@ -15,7 +15,6 @@ import javax.inject.Inject
 private val sources = listOf(
     "https://thelistenersclub.com/feed/",
     "https://myscena.org/classical-music/feed/",
-    "https://www.youtube.com/feeds/videos.xml?channel_id=UCEuQ1PaY9v049cFBEP879_A",
     "https://classicalmusicwithbigmike.com/feed/",
 )
 
