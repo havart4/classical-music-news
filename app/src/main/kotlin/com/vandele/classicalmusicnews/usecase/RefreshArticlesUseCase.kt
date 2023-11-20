@@ -16,6 +16,8 @@ private val sources = listOf(
     "https://thelistenersclub.com/feed/",
     "https://myscena.org/classical-music/feed/",
     "https://classicalmusicwithbigmike.com/feed/",
+    "https://blog.naxos.com/feed",
+    "https://theguardian.com/music/opera/rss",
 )
 
 class RefreshArticlesUseCase @Inject constructor(
