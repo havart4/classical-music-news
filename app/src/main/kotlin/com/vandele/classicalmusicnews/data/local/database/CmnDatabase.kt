@@ -16,11 +16,13 @@ abstract class CmnDatabase : RoomDatabase() {
 
     fun getAllArticles() = articlesDao.getAllArticles()
 
-    suspend fun getArticle(articleId: String) = articlesDao.getArticle(articleId)
+    fun getArticle(articleId: String) = articlesDao.getArticle(articleId)
 
     suspend fun insertArticles(articles: List<ArticleEntity>) = articlesDao.insertArticles(articles)
 
-    suspend fun deleteArticles(articles: List<ArticleEntity>) = articlesDao.deleteArticles(articles)
+    suspend fun deleteArticles(articleIds: List<String>) = articleIds.forEach { articleId ->
+        articlesDao.deleteArticle(articleId)
+    }
 
     suspend fun updateArticle(article: ArticleEntity) = articlesDao.updateArticle(article)
 }

@@ -31,7 +31,7 @@ import com.vandele.classicalmusicnews.ui.components.BookmarkButton
 @Composable
 fun DetailScreen(navigateBack: () -> Unit) {
     val viewModel = hiltViewModel<DetailViewModel>()
-    val article by viewModel.article.collectAsState()
+    val article by viewModel.article.collectAsState(null)
     val webViewState = rememberWebViewState(url = article?.link ?: "")
     // The reason we have a Scaffold here instead of putting the TopAppBar and the content in a
     // Column is that the WebView would make the TopAppBar invisible while it was loading.
@@ -40,7 +40,9 @@ fun DetailScreen(navigateBack: () -> Unit) {
             DetailTopAppBar(
                 onBackButtonClicked = navigateBack,
                 article = article,
-                onBookmarkClicked = viewModel::onBookmarkClicked,
+                onBookmarkClicked = {
+                    article?.let { viewModel.onBookmarkClicked(it) }
+                },
                 onMozartClicked = viewModel::onMozartClicked,
             )
         },

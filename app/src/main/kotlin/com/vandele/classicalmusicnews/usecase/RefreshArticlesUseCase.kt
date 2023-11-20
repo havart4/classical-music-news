@@ -43,18 +43,40 @@ class RefreshArticlesUseCase @Inject constructor(
                 return@coroutineScope CmnError.Unknown(Throwable("articles was empty")).left()
             }
 
-            // Make local storage reflect the fetched articles
             updateLocal(articles)
 
             return@coroutineScope Unit.right()
         }
     }
 
+    /**
+     * Update locally saved articles to correspond with the articles fetched from the backend.
+     * Locally saved articles that are neither bookmarked nor in [fetchedArticles] will be deleted.
+     */
     private suspend fun updateLocal(fetchedArticles: List<Article>) {
-        val articlesBeforeFetch = articlesRepository.getArticlesLocal().first()
-        articlesRepository.insertArticlesLocal(fetchedArticles)
+        val locallySavedArticleIds =
+            articlesRepository.getArticlesLocal().first().map { it.id }.toSet()
+        val bookmarkedArticleIds = articlesRepository.getArticlesLocal().first()
+            .filter { it.isBookmarked }
+            .map { it.id }
+            .toSet()
         val fetchedArticleIds = fetchedArticles.map { it.id }.toSet()
-        val articlesToDelete = articlesBeforeFetch.filter { it.id !in fetchedArticleIds }
-        articlesRepository.deleteArticlesLocal(articlesToDelete)
+
+        // Update existing and add new articles
+        articlesRepository.insertArticlesLocal(
+            fetchedArticles.map {
+                if (it.id in bookmarkedArticleIds) {
+                    it.copy(isBookmarked = true)
+                } else {
+                    it
+                }
+            }
+        )
+
+        // Delete articles that are neither bookmarked nor in fetchedArticles
+        val articleIdsToDelete = locallySavedArticleIds.filter {
+            it !in bookmarkedArticleIds && it !in fetchedArticleIds
+        }
+        articlesRepository.deleteArticlesLocal(articleIdsToDelete)
     }
 }

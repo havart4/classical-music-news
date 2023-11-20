@@ -8,8 +8,7 @@ import com.vandele.classicalmusicnews.ui.navigation.ARTICLE_ID_ARG
 import com.vandele.classicalmusicnews.usecase.GetArticleUseCase
 import com.vandele.classicalmusicnews.usecase.ToggleArticleBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,30 +18,13 @@ class DetailViewModel @Inject constructor(
     private val toggleArticleBookmarkUseCase: ToggleArticleBookmarkUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _article = MutableStateFlow<Article?>(null)
-    val article: StateFlow<Article?> = _article
+    val article: Flow<Article?> = getArticleUseCase(savedStateHandle[ARTICLE_ID_ARG] ?: "")
 
-    init {
-        val articleId: String? = savedStateHandle[ARTICLE_ID_ARG]
-        articleId?.let {
-            loadArticle(it)
-        }
-    }
-
-    fun onBookmarkClicked() {
-        _article.value?.let {
-            viewModelScope.launch { toggleArticleBookmarkUseCase.invoke(it) }
-        }
+    fun onBookmarkClicked(article: Article) {
+        viewModelScope.launch { toggleArticleBookmarkUseCase.invoke(article) }
     }
 
     fun onMozartClicked() {
         // TODO
-    }
-
-    private fun loadArticle(articleId: String) {
-        viewModelScope.launch {
-            val result = getArticleUseCase(articleId)
-            _article.value = result
-        }
     }
 }
