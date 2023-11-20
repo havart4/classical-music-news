@@ -7,6 +7,7 @@
     <string name="connection_error">We could not connect to the server. Please check your internet connection and try again.</string>
     <string name="timeout_error">The server did not respond in time. Please try again.</string>
     <string name="parse_error">Could not parse the response from the server.</string>
+    <string name="asking_mozart">"Asking Mozart..."</string>
     <string name="generic_error_message">Something went wrong. Please try again. Contact us if the problems persists.</string>
     <string name="bookmark">Bookmark</string>
     <string name="back">Back</string>
