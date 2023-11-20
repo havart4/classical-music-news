@@ -1,6 +1,8 @@
 package com.vandele.classicalmusicnews.ui.theme
 
 import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -10,8 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun getColorScheme(isDark: Boolean) =
-    when {
+fun getColorScheme(): ColorScheme {
+    val isDark = isSystemInDarkTheme()
+    return when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             // Use dynamic color for Android 12+
             val context = LocalContext.current
@@ -24,6 +27,7 @@ fun getColorScheme(isDark: Boolean) =
         isDark -> darkColorScheme
         else -> lightColorScheme
     }
+}
 
 private val darkColorScheme = darkColorScheme(
     primary = Color(0xFFD0BCFF),

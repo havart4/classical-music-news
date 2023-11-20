@@ -4,11 +4,13 @@ package com.vandele.classicalmusicnews.ui.screen.detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -27,20 +29,29 @@ import com.vandele.classicalmusicnews.model.Article
 import com.vandele.classicalmusicnews.ui.components.BookmarkButton
 
 @Composable
-fun DetailScreen(
-    viewModel: DetailViewModel = hiltViewModel(),
-    navigateBack: () -> Unit,
-) {
+fun DetailScreen(navigateBack: () -> Unit) {
+    val viewModel = hiltViewModel<DetailViewModel>()
     val article by viewModel.article.collectAsState()
     val webViewState = rememberWebViewState(url = article?.link ?: "")
-    Box(Modifier.fillMaxSize()) {
-        WebView(webViewState)
-        DetailTopAppBar(
-            onBackButtonClicked = navigateBack,
-            article = article,
-            onBookmarkClicked = viewModel::onBookmarkClicked,
-            onMozartClicked = viewModel::onMozartClicked,
-        )
+    // The reason we have a Scaffold here instead of putting the TopAppBar and the content in a
+    // Column is that the WebView would make the TopAppBar invisible while it was loading.
+    Scaffold(
+        topBar = {
+            DetailTopAppBar(
+                onBackButtonClicked = navigateBack,
+                article = article,
+                onBookmarkClicked = viewModel::onBookmarkClicked,
+                onMozartClicked = viewModel::onMozartClicked,
+            )
+        },
+    ) { contentPadding ->
+        Box(Modifier.fillMaxSize()) {
+            WebView(
+                webViewState,
+                Modifier
+                    .padding(contentPadding)
+            )
+        }
     }
 }
 

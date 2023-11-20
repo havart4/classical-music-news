@@ -159,19 +159,19 @@
         <aapt:attr name="android:animation">
             <set>
                 <objectAnimator
-                    android:duration="500"
+                    android:duration="600"
                     android:propertyName="scaleX"
                     android:repeatCount="infinite"
                     android:repeatMode="reverse"
-                    android:valueFrom="0.8"
+                    android:valueFrom="0.9"
                     android:valueTo="1.0"
                     android:valueType="floatType" />
                 <objectAnimator
-                    android:duration="500"
+                    android:duration="600"
                     android:propertyName="scaleY"
                     android:repeatCount="infinite"
                     android:repeatMode="reverse"
-                    android:valueFrom="0.8"
+                    android:valueFrom="0.9"
                     android:valueTo="1.0"
                     android:valueType="floatType" />
             </set>

@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Bookmark
-import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,14 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import coil.compose.rememberAsyncImagePainter
-import com.vandele.classicalmusicnews.R
 import com.vandele.classicalmusicnews.model.Article
 import com.vandele.classicalmusicnews.model.UiState
 import com.vandele.classicalmusicnews.ui.components.BookmarkButton
@@ -54,7 +48,7 @@ import eu.bambooapps.material3.pullrefresh.pullRefresh
 import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 
 @Composable
-fun FeedScreen(navigateToDetail: (id: String) -> Unit) {
+fun FeedScreen(contentPadding: PaddingValues, navigateToDetail: (id: String) -> Unit) {
     val viewModel = hiltViewModel<FeedViewModel>()
     ResumeObserver {
         viewModel.onResume()
@@ -63,18 +57,23 @@ fun FeedScreen(navigateToDetail: (id: String) -> Unit) {
         val state = viewModel.feedState.collectAsState(initial = UiState.Loading).value
     ) {
         is UiState.Loading -> {
-            ArticlesPlaceholder()
+            ArticlesPlaceholder(contentPadding = contentPadding)
         }
         is UiState.Error -> {
             ErrorMessage(
                 state.error,
                 Modifier
+                    .padding(contentPadding)
                     .padding(CmnSpacing.m)
                     .fillMaxSize(),
             )
         }
         is UiState.Content -> {
-            ArticlesContent(state.value, navigateToDetail = navigateToDetail)
+            ArticlesContent(
+                state.value,
+                contentPadding = contentPadding,
+                navigateToDetail = navigateToDetail
+            )
         }
     }
 }
@@ -82,6 +81,7 @@ fun FeedScreen(navigateToDetail: (id: String) -> Unit) {
 @Composable
 private fun ArticlesContent(
     content: FeedContent,
+    contentPadding: PaddingValues,
     navigateToDetail: (id: String) -> Unit,
 ) {
     val pullRefreshState = rememberPullRefreshState(
@@ -93,6 +93,7 @@ private fun ArticlesContent(
             Modifier
                 .fillMaxWidth()
                 .pullRefresh(pullRefreshState),
+            contentPadding = contentPadding,
         ) {
             items(content.articles) { article ->
                 ArticleItem(
@@ -111,8 +112,8 @@ private fun ArticlesContent(
 }
 
 @Composable
-private fun ArticlesPlaceholder() {
-    LazyColumn(Modifier.fillMaxWidth()) {
+private fun ArticlesPlaceholder(contentPadding: PaddingValues) {
+    LazyColumn(Modifier.fillMaxWidth(), contentPadding = contentPadding) {
         items(10) {
             ArticleItemPlaceholder()
         }
