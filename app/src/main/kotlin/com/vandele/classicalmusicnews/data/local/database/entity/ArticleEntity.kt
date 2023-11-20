@@ -16,6 +16,7 @@ data class ArticleEntity(
     val pubDate: Instant?,
     val title: String?,
     val channelTitle: String?,
+    val isBookmarked: Boolean,
 )
 
 const val ARTICLE_TABLE_NAME = "Article"
@@ -28,6 +29,7 @@ fun Article.toArticleEntity() = ArticleEntity(
     pubDate = pubDate,
     title = title,
     channelTitle = channelTitle,
+    isBookmarked = isBookmarked,
 )
 
 fun ArticleEntity.toArticle() = Article(
@@ -38,4 +40,5 @@ fun ArticleEntity.toArticle() = Article(
     pubDate = pubDate,
     title = title,
     channelTitle = channelTitle,
+    isBookmarked = isBookmarked,
 )

@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.vandele.classicalmusicnews.data.local.database.entity.ARTICLE_TABLE_NAME
 import com.vandele.classicalmusicnews.data.local.database.entity.ArticleEntity
 import kotlinx.coroutines.flow.Flow
@@ -19,4 +20,7 @@ interface ArticlesDao {
 
     @Delete
     suspend fun deleteArticles(articles: List<ArticleEntity>)
+
+    @Update
+    suspend fun updateArticle(article: ArticleEntity)
 }

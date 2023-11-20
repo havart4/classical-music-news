@@ -36,6 +36,14 @@ class ArticlesRepository @Inject constructor(
     suspend fun getArticlesRemote(url: String): Either<CmnError, List<Article>> {
         return articlesApi.getArticles(url = url).map { it.toArticles() }
     }
+
+    suspend fun bookmarkArticle(article: Article) {
+        database.updateArticle(article.copy(isBookmarked = true).toArticleEntity())
+    }
+
+    suspend fun unbookmarkArticle(article: Article) {
+        database.updateArticle(article.copy(isBookmarked = false).toArticleEntity())
+    }
 }
 
 private fun RssChannel.toArticles() = items.map { it.toArticle(channelTitle = this.title) }
@@ -50,6 +58,7 @@ private fun RssItem.toArticle(channelTitle: String?) = Article(
     pubDate = pubDate?.let { pubDateStringToInstant(it) },
     title = title,
     channelTitle = channelTitle,
+    isBookmarked = false,
 )
 
 private fun pubDateStringToInstant(value: String): Instant? {

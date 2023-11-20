@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8332e8465e930273cb3c1e8a7248565f",
+    "identityHash": "75d68f81fda51eda66533ef665e30550",
     "entities": [
       {
         "tableName": "Article",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `author` TEXT, `image` TEXT, `link` TEXT, `pubDate` INTEGER, `title` TEXT, `channelTitle` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `author` TEXT, `image` TEXT, `link` TEXT, `pubDate` INTEGER, `title` TEXT, `channelTitle` TEXT, `isBookmarked` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -49,6 +49,12 @@
             "columnName": "channelTitle",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "isBookmarked",
+            "columnName": "isBookmarked",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -64,7 +70,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8332e8465e930273cb3c1e8a7248565f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75d68f81fda51eda66533ef665e30550')"
     ]
   }
 }

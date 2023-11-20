@@ -8,6 +8,7 @@ import com.vandele.classicalmusicnews.model.RetryableError
 import com.vandele.classicalmusicnews.model.UiState
 import com.vandele.classicalmusicnews.usecase.GetArticlesUseCase
 import com.vandele.classicalmusicnews.usecase.RefreshArticlesUseCase
+import com.vandele.classicalmusicnews.usecase.ToggleArticleBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val refreshArticlesUseCase: RefreshArticlesUseCase,
+    private val toggleArticleBookmarkUseCase: ToggleArticleBookmarkUseCase,
     getArticlesUseCase: GetArticlesUseCase,
 ) : ViewModel() {
     private val isPullRefreshing = MutableStateFlow(false)
@@ -62,6 +64,7 @@ class FeedViewModel @Inject constructor(
                     articles = articles,
                     isPullRefreshing = isPullRefreshing,
                     onPullRefresh = ::onPullRefresh,
+                    onBookmarkClicked = ::onBookmarkClicked,
                 )
             )
         } else {
@@ -71,6 +74,7 @@ class FeedViewModel @Inject constructor(
                         articles = articles,
                         isPullRefreshing = isPullRefreshing,
                         onPullRefresh = ::onPullRefresh,
+                        onBookmarkClicked = ::onBookmarkClicked,
                     )
                 )
                 is RefreshState.Error -> UiState.Error(
@@ -82,10 +86,15 @@ class FeedViewModel @Inject constructor(
                 is RefreshState.Loading -> UiState.Loading
             }
         }
+
+    private fun onBookmarkClicked(article: Article) {
+        viewModelScope.launch { toggleArticleBookmarkUseCase(article) }
+    }
 }
 
 data class FeedContent(
     val articles: List<Article>,
+    val onBookmarkClicked: (Article) -> Unit,
     val isPullRefreshing: Boolean,
     val onPullRefresh: () -> Unit,
 )

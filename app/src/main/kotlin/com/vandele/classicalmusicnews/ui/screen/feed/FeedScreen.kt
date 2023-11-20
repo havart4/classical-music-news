@@ -16,7 +16,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,12 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import coil.compose.rememberAsyncImagePainter
+import com.vandele.classicalmusicnews.R
 import com.vandele.classicalmusicnews.model.Article
 import com.vandele.classicalmusicnews.model.UiState
 import com.vandele.classicalmusicnews.ui.components.ErrorMessage
@@ -87,7 +94,11 @@ private fun ArticlesContent(
                 .pullRefresh(pullRefreshState),
         ) {
             items(content.articles) { article ->
-                ArticleItem(article, onClick = { navigateToDetail(article.id) })
+                ArticleItem(
+                    article,
+                    onClick = { navigateToDetail(article.id) },
+                    onBookmarkClicked = { content.onBookmarkClicked(article) },
+                )
             }
         }
         PullRefreshIndicator(
@@ -108,7 +119,7 @@ private fun ArticlesPlaceholder() {
 }
 
 @Composable
-private fun ArticleItem(article: Article, onClick: () -> Unit) {
+private fun ArticleItem(article: Article, onClick: () -> Unit, onBookmarkClicked: () -> Unit) {
     Surface(
         Modifier
             .clickable(onClick = onClick)
@@ -116,16 +127,28 @@ private fun ArticleItem(article: Article, onClick: () -> Unit) {
     ) {
         Row(Modifier.fillMaxWidth()) {
             TextColumn(article, Modifier.weight(1f))
-            article.image?.let { imageUrl ->
-                Spacer(Modifier.width(CmnSpacing.m))
-                Image(
-                    painter = rememberAsyncImagePainter(imageUrl),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(120.dp, 80.dp)
-                        .clip(MaterialTheme.shapes.small),
-                    contentScale = ContentScale.Crop,
-                )
+            Column(horizontalAlignment = Alignment.End) {
+                article.image?.let { imageUrl ->
+                    Spacer(Modifier.width(CmnSpacing.m))
+                    Image(
+                        painter = rememberAsyncImagePainter(imageUrl),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(120.dp, 80.dp)
+                            .clip(MaterialTheme.shapes.small),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+                IconButton(onClick = onBookmarkClicked) {
+                    Icon(
+                        if (article.isBookmarked) {
+                            Icons.Rounded.Bookmark
+                        } else {
+                            Icons.Rounded.BookmarkBorder
+                        },
+                        contentDescription = stringResource(R.string.bookmark),
+                    )
+                }
             }
         }
     }

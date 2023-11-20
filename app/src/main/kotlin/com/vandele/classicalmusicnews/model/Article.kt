@@ -10,4 +10,5 @@ data class Article(
     val pubDate: Instant?,
     val title: String?,
     val channelTitle: String?,
+    val isBookmarked: Boolean,
 )

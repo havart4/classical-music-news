@@ -19,4 +19,6 @@ abstract class CmnDatabase : RoomDatabase() {
     suspend fun insertArticles(articles: List<ArticleEntity>) = articlesDao.insertArticles(articles)
 
     suspend fun deleteArticles(articles: List<ArticleEntity>) = articlesDao.deleteArticles(articles)
+
+    suspend fun updateArticle(article: ArticleEntity) = articlesDao.updateArticle(article)
 }
