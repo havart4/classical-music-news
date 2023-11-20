@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.Instant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +26,7 @@ class FeedViewModel @Inject constructor(
 ) : ViewModel() {
     private val isPullRefreshing = MutableStateFlow(false)
     private val articlesRefreshState = MutableStateFlow<RefreshState>(RefreshState.Loading)
+    private var lastResumeRefreshTime = Instant.MIN
 
     val feedState: Flow<UiState<FeedContent>> = combine(
         getArticlesUseCase(),
@@ -34,7 +37,10 @@ class FeedViewModel @Inject constructor(
     }
 
     fun onResume() {
-        refreshArticles()
+        if (Duration.between(lastResumeRefreshTime, Instant.now()).seconds >= 60) {
+            refreshArticles()
+            lastResumeRefreshTime = Instant.now()
+        }
     }
 
     private fun onPullRefresh() {
