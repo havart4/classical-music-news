@@ -14,7 +14,7 @@ import javax.inject.Singleton
 object CmnDatabaseModule {
     @Provides
     @Singleton
-    fun providesCmnDatabase(@ApplicationContext context: Context) =
+    fun provideCmnDatabase(@ApplicationContext context: Context) =
         Room.databaseBuilder(
             context.applicationContext,
             CmnDatabase::class.java,

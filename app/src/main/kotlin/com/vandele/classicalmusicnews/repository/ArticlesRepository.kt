@@ -9,6 +9,7 @@ import com.vandele.classicalmusicnews.data.local.database.entity.toArticleEntity
 import com.vandele.classicalmusicnews.data.remote.ArticlesApi
 import com.vandele.classicalmusicnews.model.Article
 import com.vandele.classicalmusicnews.model.CmnError
+import com.vandele.classicalmusicnews.model.RssSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.Instant
@@ -35,8 +36,8 @@ class ArticlesRepository @Inject constructor(
 
     suspend fun deleteArticlesLocal(articleIds: List<String>) = database.deleteArticles(articleIds)
 
-    suspend fun getArticlesRemote(url: String): Either<CmnError, List<Article>> {
-        return articlesApi.getArticles(url = url).map { it.toArticles() }
+    suspend fun getArticlesRemote(rssSource: RssSource): Either<CmnError, List<Article>> {
+        return articlesApi.getArticles(url = rssSource.link).map { it.toArticles(rssSource) }
     }
 
     suspend fun bookmarkArticle(article: Article) {
@@ -48,9 +49,9 @@ class ArticlesRepository @Inject constructor(
     }
 }
 
-private fun RssChannel.toArticles() = items.map { it.toArticle(channelTitle = this.title) }
+private fun RssChannel.toArticles(rssSource: RssSource) = items.map { it.toArticle(rssSource) }
 
-private fun RssItem.toArticle(channelTitle: String?) = Article(
+private fun RssItem.toArticle(rssSource: RssSource?) = Article(
     author = author,
     id = link.let {
         if (it.isNullOrBlank()) UUID.randomUUID().toString() else it
@@ -59,7 +60,7 @@ private fun RssItem.toArticle(channelTitle: String?) = Article(
     link = link,
     pubDate = pubDate?.let { pubDateStringToInstant(it) },
     title = title,
-    channelTitle = channelTitle,
+    rssSource = rssSource,
     isBookmarked = false,
 )
 

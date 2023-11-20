@@ -5,10 +5,11 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun CmnTheme(
+    isDark: Boolean,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = getColorScheme(),
+        colorScheme = getColorScheme(isDark = isDark),
         typography = Typography,
     ) {
         content()

@@ -6,7 +6,7 @@ import com.vandele.classicalmusicnews.model.Article
 import com.vandele.classicalmusicnews.model.RefreshState
 import com.vandele.classicalmusicnews.model.RetryableError
 import com.vandele.classicalmusicnews.model.UiState
-import com.vandele.classicalmusicnews.usecase.GetArticlesUseCase
+import com.vandele.classicalmusicnews.usecase.GetFeedArticlesUseCase
 import com.vandele.classicalmusicnews.usecase.RefreshArticlesUseCase
 import com.vandele.classicalmusicnews.usecase.ToggleArticleBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,14 +22,14 @@ import javax.inject.Inject
 class FeedViewModel @Inject constructor(
     private val refreshArticlesUseCase: RefreshArticlesUseCase,
     private val toggleArticleBookmarkUseCase: ToggleArticleBookmarkUseCase,
-    getArticlesUseCase: GetArticlesUseCase,
+    getFeedArticlesUseCase: GetFeedArticlesUseCase,
 ) : ViewModel() {
     private val isPullRefreshing = MutableStateFlow(false)
     private val articlesRefreshState = MutableStateFlow<RefreshState>(RefreshState.Loading)
     private var lastResumeRefreshTime = Instant.MIN
 
     val feedState: Flow<UiState<FeedContent>> = combine(
-        getArticlesUseCase(),
+        getFeedArticlesUseCase(),
         articlesRefreshState,
         isPullRefreshing,
     ) { articles, articlesRefreshState, isPullRefreshing ->

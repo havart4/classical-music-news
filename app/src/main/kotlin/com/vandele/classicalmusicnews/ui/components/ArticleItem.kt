@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -73,11 +74,13 @@ private fun TextColumn(article: Article, modifier: Modifier = Modifier) {
             overflow = TextOverflow.Ellipsis,
             maxLines = 3,
         )
-        Text(
-            text = article.channelTitle ?: "",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        article.rssSource?.let {
+            Text(
+                text = stringResource(article.rssSource.nameRes),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         Text(
             text = article.pubDate?.toMediumString() ?: "",
             style = MaterialTheme.typography.bodySmall,

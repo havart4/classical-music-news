@@ -9,6 +9,6 @@ data class Article(
     val link: String?,
     val pubDate: Instant?,
     val title: String?,
-    val channelTitle: String?,
+    val rssSource: RssSource?,
     val isBookmarked: Boolean,
 )

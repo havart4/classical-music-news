@@ -7,10 +7,20 @@
     <string name="connection_error">We could not connect to the server. Please check your internet connection and try again.</string>
     <string name="timeout_error">The server did not respond in time. Please try again.</string>
     <string name="parse_error">Could not parse the response from the server.</string>
-    <string name="asking_mozart">"Asking Mozart..."</string>
+    <string name="asking_mozart">"Asking Mozart…"</string>
     <string name="generic_error_message">Something went wrong. Please try again. Contact us if the problems persists.</string>
     <string name="bookmark">Bookmark</string>
     <string name="back">Back</string>
     <string name="mozart">Mozart</string>
     <string name="bookmarked_articles_will_appear_here">Bookmarked articles will appear here.</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="system_default">System default</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="source_classical_music_with_big_mike">Classical Music With Big Mike</string>
+    <string name="source_my_scena">my/maSCENA</string>
+    <string name="source_naxos">Naxos</string>
+    <string name="source_the_guardian_opera">The Guardian Opera</string>
+    <string name="source_the_listeners_club">"The Listeners' Club"</string>
+    <string name="news_sources">News sources</string>
 </resources>

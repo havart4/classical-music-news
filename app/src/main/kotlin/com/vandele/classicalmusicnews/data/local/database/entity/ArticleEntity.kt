@@ -3,6 +3,7 @@ package com.vandele.classicalmusicnews.data.local.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.vandele.classicalmusicnews.model.Article
+import com.vandele.classicalmusicnews.model.RssSource
 import java.time.Instant
 
 @Entity(tableName = ARTICLE_TABLE_NAME)
@@ -15,7 +16,7 @@ data class ArticleEntity(
     val link: String?,
     val pubDate: Instant?,
     val title: String?,
-    val channelTitle: String?,
+    val rssSourceId: String?,
     val isBookmarked: Boolean,
 )
 
@@ -28,7 +29,7 @@ fun Article.toArticleEntity() = ArticleEntity(
     link = link,
     pubDate = pubDate,
     title = title,
-    channelTitle = channelTitle,
+    rssSourceId = rssSource?.id,
     isBookmarked = isBookmarked,
 )
 
@@ -39,6 +40,6 @@ fun ArticleEntity.toArticle() = Article(
     link = link,
     pubDate = pubDate,
     title = title,
-    channelTitle = channelTitle,
+    rssSource = rssSourceId?.let { RssSource.fromId(it) },
     isBookmarked = isBookmarked,
 )
