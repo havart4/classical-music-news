@@ -37,7 +37,10 @@ fun CmnNavHost(
             )
         }
         composable(route = BOOKMARKS_ROUTE) {
-            BookmarksScreen(contentPadding = contentPadding)
+            BookmarksScreen(
+                contentPadding = contentPadding,
+                navigateToDetail = navController::navigateToDetail,
+            )
         }
         composable(route = SETTINGS_ROUTE) {
             SettingsScreen(contentPadding = contentPadding)
