@@ -2,22 +2,90 @@ package com.vandele.classicalmusicnews.ui.screen.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vandele.classicalmusicnews.model.Article
+import com.vandele.classicalmusicnews.model.RefreshState
+import com.vandele.classicalmusicnews.model.RetryableError
+import com.vandele.classicalmusicnews.model.UiState
 import com.vandele.classicalmusicnews.usecase.GetArticlesUseCase
 import com.vandele.classicalmusicnews.usecase.RefreshArticlesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    private val getArticlesUseCase: GetArticlesUseCase,
     private val refreshArticlesUseCase: RefreshArticlesUseCase,
+    getArticlesUseCase: GetArticlesUseCase,
 ) : ViewModel() {
-    val articles = getArticlesUseCase()
+    private val isPullRefreshing = MutableStateFlow(false)
+    private val articlesRefreshState = MutableStateFlow<RefreshState>(RefreshState.Loading)
 
-    fun fetchArticles() {
+    val feedState: Flow<UiState<FeedContent>> = combine(
+        getArticlesUseCase(),
+        articlesRefreshState,
+        isPullRefreshing,
+    ) { articles, refreshStatus, isPullRefreshing ->
+        combineToUiState(articles, refreshStatus, isPullRefreshing)
+    }
+
+    fun onResume() {
+        refreshArticles()
+    }
+
+    private fun onPullRefresh() {
+        isPullRefreshing.value = true
+        if (articlesRefreshState.value is RefreshState.Loading) return
+        refreshArticles()
+    }
+
+    private fun refreshArticles() {
+        articlesRefreshState.value = RefreshState.Loading
         viewModelScope.launch {
-            val result = refreshArticlesUseCase()
+            refreshArticlesUseCase()
+                .onLeft { articlesRefreshState.value = RefreshState.Error(it) }
+                .onRight { articlesRefreshState.value = RefreshState.Content }
+            isPullRefreshing.value = false
         }
     }
+
+    private fun combineToUiState(
+        articles: List<Article>,
+        articlesRefreshState: RefreshState,
+        isPullRefreshing: Boolean,
+    ): UiState<FeedContent> =
+        if (articles.isNotEmpty()) {
+            UiState.Content(
+                FeedContent(
+                    articles = articles,
+                    isPullRefreshing = isPullRefreshing,
+                    onPullRefresh = ::onPullRefresh,
+                )
+            )
+        } else {
+            when (articlesRefreshState) {
+                is RefreshState.Content -> UiState.Content(
+                    FeedContent(
+                        articles = articles,
+                        isPullRefreshing = isPullRefreshing,
+                        onPullRefresh = ::onPullRefresh,
+                    )
+                )
+                is RefreshState.Error -> UiState.Error(
+                    RetryableError(
+                        cmnError = articlesRefreshState.cmnError,
+                        onRetry = ::refreshArticles,
+                    )
+                )
+                is RefreshState.Loading -> UiState.Loading
+            }
+        }
 }
+
+data class FeedContent(
+    val articles: List<Article>,
+    val isPullRefreshing: Boolean,
+    val onPullRefresh: () -> Unit,
+)

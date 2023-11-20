@@ -3,8 +3,8 @@ package com.vandele.classicalmusicnews.usecase
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.vandele.classicalmusicnews.data.remote.RemoteError
 import com.vandele.classicalmusicnews.model.Article
+import com.vandele.classicalmusicnews.model.CmnError
 import com.vandele.classicalmusicnews.repository.ArticlesRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -21,7 +21,7 @@ private val sources = listOf(
 class RefreshArticlesUseCase @Inject constructor(
     private val articlesRepository: ArticlesRepository,
 ) {
-    suspend operator fun invoke(): Either<RemoteError, Unit> {
+    suspend operator fun invoke(): Either<CmnError, Unit> {
         return coroutineScope {
             // Fetch articles from each source
             val results = sources.map {
@@ -34,11 +34,11 @@ class RefreshArticlesUseCase @Inject constructor(
             // Return the first error if we failed to fetch any articles
             if (articles.isEmpty()) {
                 results.forEach {
-                    if (it is Either.Left<RemoteError>) {
+                    if (it is Either.Left<CmnError>) {
                         return@coroutineScope it
                     }
                 }
-                return@coroutineScope RemoteError.Unknown(Throwable("articles was empty")).left()
+                return@coroutineScope CmnError.Unknown(Throwable("articles was empty")).left()
             }
 
             // Make local storage reflect the fetched articles

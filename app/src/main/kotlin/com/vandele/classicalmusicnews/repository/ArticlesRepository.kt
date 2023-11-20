@@ -7,8 +7,8 @@ import com.vandele.classicalmusicnews.data.local.database.CmnDatabase
 import com.vandele.classicalmusicnews.data.local.database.entity.toArticle
 import com.vandele.classicalmusicnews.data.local.database.entity.toArticleEntity
 import com.vandele.classicalmusicnews.data.remote.ArticlesApi
-import com.vandele.classicalmusicnews.data.remote.RemoteError
 import com.vandele.classicalmusicnews.model.Article
+import com.vandele.classicalmusicnews.model.CmnError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.Instant
@@ -33,8 +33,9 @@ class ArticlesRepository @Inject constructor(
     suspend fun deleteArticlesLocal(articles: List<Article>) =
         database.deleteArticles(articles.map { it.toArticleEntity() })
 
-    suspend fun getArticlesRemote(url: String): Either<RemoteError, List<Article>> =
-        articlesApi.getArticles(url = url).map { it.toArticles() }
+    suspend fun getArticlesRemote(url: String): Either<CmnError, List<Article>> {
+        return articlesApi.getArticles(url = url).map { it.toArticles() }
+    }
 }
 
 private fun RssChannel.toArticles() = items.map { it.toArticle(channelTitle = this.title) }
