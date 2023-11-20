@@ -10,7 +10,7 @@ import com.vandele.classicalmusicnews.data.local.database.entity.ArticleEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ArticlesDao {
+interface ArticleDao {
     @Query("SELECT * FROM $ARTICLE_TABLE_NAME WHERE id = :articleId")
     fun getArticle(articleId: String): Flow<ArticleEntity?>
 

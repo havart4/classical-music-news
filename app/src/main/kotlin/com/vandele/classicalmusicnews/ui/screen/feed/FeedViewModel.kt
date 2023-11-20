@@ -32,8 +32,8 @@ class FeedViewModel @Inject constructor(
         getArticlesUseCase(),
         articlesRefreshState,
         isPullRefreshing,
-    ) { articles, refreshStatus, isPullRefreshing ->
-        combineToUiState(articles, refreshStatus, isPullRefreshing)
+    ) { articles, articlesRefreshState, isPullRefreshing ->
+        combineToUiState(articles, articlesRefreshState, isPullRefreshing)
     }
 
     fun onResume() {

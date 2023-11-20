@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.vandele.classicalmusicnews.ui.screen.bookmarks.BookmarksScreen
 import com.vandele.classicalmusicnews.ui.screen.detail.DetailScreen
 import com.vandele.classicalmusicnews.ui.screen.feed.FeedScreen
+import com.vandele.classicalmusicnews.ui.screen.mozart.MozartScreen
 import com.vandele.classicalmusicnews.ui.screen.settings.SettingsScreen
 import java.net.URLEncoder
 
@@ -32,15 +33,8 @@ fun CmnNavHost(
         composable(route = FEED_ROUTE) {
             FeedScreen(
                 contentPadding = contentPadding,
-                navigateToDetail = { articleId ->
-                    navController.navigate(
-                        "detail/${encodeArgument(articleId)}"
-                    )
-                }
+                navigateToDetail = navController::navigateToDetail,
             )
-        }
-        composable(route = "detail/{$ARTICLE_ID_ARG}") {
-            DetailScreen(navigateBack = navController::navigateUp)
         }
         composable(route = BOOKMARKS_ROUTE) {
             BookmarksScreen(contentPadding = contentPadding)
@@ -48,7 +42,28 @@ fun CmnNavHost(
         composable(route = SETTINGS_ROUTE) {
             SettingsScreen(contentPadding = contentPadding)
         }
+        composable(route = "detail/{$ARTICLE_ID_ARG}") {
+            DetailScreen(
+                navigateUp = navController::navigateUp,
+                navigateToMozart = navController::navigateToMozart,
+            )
+        }
+        composable(route = "mozart/{$ARTICLE_ID_ARG}") {
+            MozartScreen(contentPadding = contentPadding, navigateUp = navController::navigateUp)
+        }
     }
+}
+
+private fun NavHostController.navigateToDetail(articleId: String) {
+    navigate(
+        "detail/${encodeArgument(articleId)}"
+    )
+}
+
+private fun NavHostController.navigateToMozart(articleId: String) {
+    navigate(
+        "mozart/${encodeArgument(articleId)}"
+    )
 }
 
 private fun encodeArgument(argument: String) = URLEncoder.encode(argument, Charsets.UTF_8.name())

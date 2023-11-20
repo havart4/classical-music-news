@@ -14,17 +14,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getArticleUseCase: GetArticleUseCase,
     private val toggleArticleBookmarkUseCase: ToggleArticleBookmarkUseCase,
+    getArticleUseCase: GetArticleUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     val article: Flow<Article?> = getArticleUseCase(savedStateHandle[ARTICLE_ID_ARG] ?: "")
 
     fun onBookmarkClicked(article: Article) {
         viewModelScope.launch { toggleArticleBookmarkUseCase.invoke(article) }
-    }
-
-    fun onMozartClicked() {
-        // TODO
     }
 }

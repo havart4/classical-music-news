@@ -6,6 +6,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -47,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -83,7 +85,11 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("io.github.fornewid:placeholder-material3:1.0.1")
     implementation("io.ktor:ktor-client-cio:2.3.6")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
     implementation("io.ktor:ktor-client-core:2.3.6")
+    implementation("io.ktor:ktor-client-logging:2.3.6")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
 
     ksp("androidx.room:room-compiler:2.6.0")

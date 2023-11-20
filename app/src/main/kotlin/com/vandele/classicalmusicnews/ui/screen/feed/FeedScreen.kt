@@ -96,7 +96,7 @@ private fun ArticlesContent(
     Box {
         LazyColumn(
             Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .pullRefresh(pullRefreshState),
             contentPadding = contentPadding,
         ) {

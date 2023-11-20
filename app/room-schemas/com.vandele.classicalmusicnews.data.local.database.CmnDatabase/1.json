@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "75d68f81fda51eda66533ef665e30550",
+    "identityHash": "e7646589be28d898bac017e66b86e4b7",
     "entities": [
       {
         "tableName": "Article",
@@ -65,12 +65,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "MozartOpinion",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`articleLink` TEXT NOT NULL, `message` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`articleLink`))",
+        "fields": [
+          {
+            "fieldPath": "articleLink",
+            "columnName": "articleLink",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "message",
+            "columnName": "message",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "articleLink"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75d68f81fda51eda66533ef665e30550')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e7646589be28d898bac017e66b86e4b7')"
     ]
   }
 }

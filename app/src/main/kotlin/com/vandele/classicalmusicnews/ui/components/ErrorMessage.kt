@@ -44,7 +44,8 @@ private fun CmnError.getString(): String = when (this) {
     is CmnError.ServerError -> genericErrorMessage()
     is CmnError.ConnectionError -> stringResource(R.string.connection_error)
     is CmnError.TimeoutError -> stringResource(R.string.timeout_error)
-    is CmnError.Unknown -> reason.localizedMessage ?: genericErrorMessage()
+    is CmnError.Unknown -> genericErrorMessage()
+    CmnError.ParseError -> stringResource(R.string.parse_error)
 }
 
 @Composable
