@@ -15,4 +15,8 @@ abstract class CmnDatabase : RoomDatabase() {
     protected abstract val articlesDao: ArticlesDao
 
     fun getAllArticles() = articlesDao.getAllArticles()
+
+    suspend fun insertArticles(articles: List<ArticleEntity>) = articlesDao.insertArticles(articles)
+
+    suspend fun deleteArticles(articles: List<ArticleEntity>) = articlesDao.deleteArticles(articles)
 }

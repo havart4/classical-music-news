@@ -10,14 +10,23 @@ data class ArticleEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
 
-    val author: String,
-    val image: String,
-    val link: String,
-    val pubDate: Instant,
-    val title: String,
+    val author: String?,
+    val image: String?,
+    val link: String?,
+    val pubDate: Instant?,
+    val title: String?,
 )
 
 const val ARTICLE_TABLE_NAME = "Article"
+
+fun Article.toArticleEntity() = ArticleEntity(
+    id = id,
+    author = author,
+    image = image,
+    link = link,
+    pubDate = pubDate,
+    title = title,
+)
 
 fun ArticleEntity.toArticle() = Article(
     author = author,

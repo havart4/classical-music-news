@@ -8,5 +8,5 @@ import javax.inject.Inject
 class GetArticlesUseCase @Inject constructor(
     private val articlesRepository: ArticlesRepository,
 ) {
-    operator fun invoke(): Flow<List<Article>> = articlesRepository.getArticles()
+    operator fun invoke(): Flow<List<Article>> = articlesRepository.getArticlesLocal()
 }

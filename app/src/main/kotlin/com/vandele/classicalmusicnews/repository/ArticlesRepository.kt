@@ -1,29 +1,67 @@
 package com.vandele.classicalmusicnews.repository
 
-import android.util.Log
 import arrow.core.Either
+import com.prof18.rssparser.model.RssChannel
+import com.prof18.rssparser.model.RssItem
 import com.vandele.classicalmusicnews.data.local.database.CmnDatabase
 import com.vandele.classicalmusicnews.data.local.database.entity.toArticle
+import com.vandele.classicalmusicnews.data.local.database.entity.toArticleEntity
 import com.vandele.classicalmusicnews.data.remote.ArticlesApi
 import com.vandele.classicalmusicnews.data.remote.RemoteError
 import com.vandele.classicalmusicnews.model.Article
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.util.Locale
+import java.util.UUID
 import javax.inject.Inject
 
 class ArticlesRepository @Inject constructor(
     private val database: CmnDatabase,
     private val articlesApi: ArticlesApi,
 ) {
-    fun getArticles(): Flow<List<Article>> = database.getAllArticles().map { articleEntities ->
+    fun getArticlesLocal(): Flow<List<Article>> = database.getAllArticles().map { articleEntities ->
         articleEntities.map { it.toArticle() }
     }
 
-    suspend fun refreshArticles(): Either<RemoteError, Unit> = articlesApi.getArticles(
-        "https://slippedisc.com/feed/"
-    ).map {
-        val x = it
-        Log.d("x", x.toString())
-        // TODO
+    suspend fun insertArticlesLocal(articles: List<Article>) =
+        database.insertArticles(articles.map { it.toArticleEntity() })
+
+    suspend fun deleteArticlesLocal(articles: List<Article>) =
+        database.deleteArticles(articles.map { it.toArticleEntity() })
+
+    suspend fun getArticlesRemote(url: String): Either<RemoteError, List<Article>> =
+        articlesApi.getArticles(url = url).map { it.toArticles() }
+}
+
+private fun RssChannel.toArticles() = items.map { it.toArticle() }
+
+private fun RssItem.toArticle() = Article(
+    author = author,
+    id = UUID.randomUUID().toString(),
+    image = image,
+    link = link,
+    pubDate = pubDate?.let { pubDateStringToInstant(it) },
+    title = title,
+)
+
+private fun pubDateStringToInstant(value: String): Instant? {
+    val pubDateFormats = listOf(
+        "EEE, dd MMM yyyy HH:mm:ss zzz",
+        "EEE, dd MMM yyyy HH:mm zzz",
+        "EEE, dd MMM yyyy HH:mm zzz",
+        "EEE, dd MMM yyyy HH:mm:ss Z",
+    )
+    pubDateFormats.forEach { format ->
+        try {
+            val formatter = DateTimeFormatter.ofPattern(format, Locale.ENGLISH)
+            return ZonedDateTime.parse(value, formatter).toInstant()
+        } catch (e: DateTimeParseException) {
+            // No-op
+        }
     }
+    return null
 }
