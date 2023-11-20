@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 
-package com.vandele.classicalmusicnews
+package com.vandele.classicalmusicnews.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -26,6 +26,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.vandele.classicalmusicnews.ui.navigation.CmnNavHost
+import com.vandele.classicalmusicnews.ui.navigation.CmnNavigationBarItem
 
 @Composable
 fun CmnApp() {

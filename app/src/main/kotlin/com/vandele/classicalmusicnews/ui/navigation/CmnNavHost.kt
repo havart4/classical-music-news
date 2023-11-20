@@ -1,4 +1,4 @@
-package com.vandele.classicalmusicnews
+package com.vandele.classicalmusicnews.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

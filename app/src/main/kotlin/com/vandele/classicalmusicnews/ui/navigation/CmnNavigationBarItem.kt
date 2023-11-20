@@ -1,4 +1,4 @@
-package com.vandele.classicalmusicnews
+package com.vandele.classicalmusicnews.ui.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -6,6 +6,7 @@ import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.Segment
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.vandele.classicalmusicnews.R
 
 sealed class CmnNavigationBarItem(
     @StringRes val labelRes: Int,
