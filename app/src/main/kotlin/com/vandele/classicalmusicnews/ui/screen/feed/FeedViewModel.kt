@@ -5,4 +5,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FeedViewModel @Inject constructor() : ViewModel()
+class FeedViewModel @Inject constructor(
+    private val getArticlesUseCase: GetArticlesUseCase,
+    private val refreshArticlesUseCase: RefreshArticlesUseCase,
+) : ViewModel() {
+    val articles = getArticlesUseCase()
+
+    fun fetchArticles() {
+        // TODO
+    }
+}
