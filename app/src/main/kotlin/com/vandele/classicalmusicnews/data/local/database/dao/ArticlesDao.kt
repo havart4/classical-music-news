@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArticlesDao {
+    @Query("SELECT * FROM $ARTICLE_TABLE_NAME WHERE id = :articleId")
+    suspend fun getArticle(articleId: String): ArticleEntity?
+
     @Query("SELECT * FROM $ARTICLE_TABLE_NAME ORDER by pubDate DESC")
     fun getAllArticles(): Flow<List<ArticleEntity>>
 

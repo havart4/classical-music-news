@@ -27,6 +27,9 @@ class ArticlesRepository @Inject constructor(
         articleEntities.map { it.toArticle() }
     }
 
+    suspend fun getArticleLocal(articleId: String) =
+        database.getArticle(articleId = articleId)?.toArticle()
+
     suspend fun insertArticlesLocal(articles: List<Article>) =
         database.insertArticles(articles.map { it.toArticleEntity() })
 
