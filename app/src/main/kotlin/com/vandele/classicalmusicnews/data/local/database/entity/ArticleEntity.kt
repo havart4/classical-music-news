@@ -15,6 +15,7 @@ data class ArticleEntity(
     val link: String?,
     val pubDate: Instant?,
     val title: String?,
+    val channelTitle: String?,
 )
 
 const val ARTICLE_TABLE_NAME = "Article"
@@ -26,6 +27,7 @@ fun Article.toArticleEntity() = ArticleEntity(
     link = link,
     pubDate = pubDate,
     title = title,
+    channelTitle = channelTitle,
 )
 
 fun ArticleEntity.toArticle() = Article(
@@ -35,4 +37,5 @@ fun ArticleEntity.toArticle() = Article(
     link = link,
     pubDate = pubDate,
     title = title,
+    channelTitle = channelTitle,
 )

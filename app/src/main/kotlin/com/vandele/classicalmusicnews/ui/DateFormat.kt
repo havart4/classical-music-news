@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun Instant.toMediumString(): String = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
+fun Instant.toMediumString(): String = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
     .withLocale(LocalConfiguration.current.locales[0])
     .withZone(ZoneId.systemDefault())
     .format(this) ?: ""

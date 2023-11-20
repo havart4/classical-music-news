@@ -37,9 +37,9 @@ class ArticlesRepository @Inject constructor(
         articlesApi.getArticles(url = url).map { it.toArticles() }
 }
 
-private fun RssChannel.toArticles() = items.map { it.toArticle() }
+private fun RssChannel.toArticles() = items.map { it.toArticle(channelTitle = this.title) }
 
-private fun RssItem.toArticle() = Article(
+private fun RssItem.toArticle(channelTitle: String?) = Article(
     author = author,
     id = link.let {
         if (it.isNullOrBlank()) UUID.randomUUID().toString() else it
@@ -48,6 +48,7 @@ private fun RssItem.toArticle() = Article(
     link = link,
     pubDate = pubDate?.let { pubDateStringToInstant(it) },
     title = title,
+    channelTitle = channelTitle,
 )
 
 private fun pubDateStringToInstant(value: String): Instant? {

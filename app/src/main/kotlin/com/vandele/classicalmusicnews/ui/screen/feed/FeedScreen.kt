@@ -79,20 +79,16 @@ private fun Text(article: Article, modifier: Modifier = Modifier) {
             overflow = TextOverflow.Ellipsis,
             maxLines = 3,
         )
-        article.author?.let { author ->
-            Text(
-                text = "by $author",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        article.pubDate?.let { pubDate ->
-            Text(
-                text = pubDate.toMediumString(),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+        Text(
+            text = article.channelTitle ?: "",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = article.pubDate?.toMediumString() ?: "",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
