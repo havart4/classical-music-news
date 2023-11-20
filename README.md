@@ -1,8 +1,18 @@
+# Table of Contents
+1. [About the App](#about-the-app)
+2. [About the Code](#about-the-code)
+3. [Screenshots](#screenshots)
+
 # About the app
 
 Classical Music News (CMN) is an RSS feed reader for news about classical music.
 
 CMN lets you ask Mozart's opinion about the news article. You can do this by clicking the Mozart button in the top-right corner of the Details screen. When you click it, an API call is made to a simple Node/Typescript/Express backend that's hosted on Replit. The CMN backend fetches some of the article text based on the link query parameter and passes it along to a GPT 3.5 turbo model via the Open AI API. The AI model is instructed to be Mozart resurrected and ready to give his opinions on classical music news articles.
+<p>
+  <img src="screenshots/mozart_screen_1.png" alt="Mozart screen loading" width="30%" />
+  <span style="font-size: 2em;"> ➡️ </span>
+  <img src="screenshots/mozart_screen_2.png" alt="Mozart screen" width="30%" />
+</p>
 
 You can select light mode or dark mode on the Settings screen.
 
