@@ -1,6 +1,7 @@
 package com.vandele.classicalmusicnews.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,10 +18,11 @@ const val SETTINGS_ROUTE = "settings"
 const val ARTICLE_ID_ARG = "articleId"
 
 @Composable
-fun CmnNavHost(navController: NavHostController) {
+fun CmnNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         startDestination = FEED_ROUTE,
+        modifier = modifier,
     ) {
         composable(route = FEED_ROUTE) {
             FeedScreen(
@@ -32,7 +34,7 @@ fun CmnNavHost(navController: NavHostController) {
             )
         }
         composable(route = "detail/{$ARTICLE_ID_ARG}") {
-            DetailScreen()
+            DetailScreen(navigateBack = navController::navigateUp)
         }
         composable(route = BOOKMARKS_ROUTE) {
             BookmarksScreen()

@@ -8,4 +8,6 @@
     <string name="timeout_error">The server did not respond in time. Please try again.</string>
     <string name="generic_error_message">Something went wrong. Please try again. Contact us if the problems persists.</string>
     <string name="bookmark">Bookmark</string>
+    <string name="back">Back</string>
+    <string name="mozart">Mozart</string>
 </resources>

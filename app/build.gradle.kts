@@ -75,6 +75,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("androidx.room:room-ktx:2.6.0")
     implementation("androidx.room:room-runtime:2.6.0")
+    implementation("com.google.accompanist:accompanist-webview:0.32.0")
     implementation("com.google.dagger:hilt-android:2.48.1")
     implementation("com.prof18.rssparser:rssparser:6.0.4")
     implementation("eu.bambooapps:compose-material3-pullrefresh:1.0.1")

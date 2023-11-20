@@ -43,6 +43,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.vandele.classicalmusicnews.R
 import com.vandele.classicalmusicnews.model.Article
 import com.vandele.classicalmusicnews.model.UiState
+import com.vandele.classicalmusicnews.ui.components.BookmarkButton
 import com.vandele.classicalmusicnews.ui.components.ErrorMessage
 import com.vandele.classicalmusicnews.ui.components.PlaceholderBox
 import com.vandele.classicalmusicnews.ui.rememberTextHeight
@@ -139,16 +140,7 @@ private fun ArticleItem(article: Article, onClick: () -> Unit, onBookmarkClicked
                         contentScale = ContentScale.Crop,
                     )
                 }
-                IconButton(onClick = onBookmarkClicked) {
-                    Icon(
-                        if (article.isBookmarked) {
-                            Icons.Rounded.Bookmark
-                        } else {
-                            Icons.Rounded.BookmarkBorder
-                        },
-                        contentDescription = stringResource(R.string.bookmark),
-                    )
-                }
+                BookmarkButton(onClick = onBookmarkClicked, isBookmarked = article.isBookmarked)
             }
         }
     }
