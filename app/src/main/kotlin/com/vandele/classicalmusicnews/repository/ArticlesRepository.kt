@@ -41,7 +41,9 @@ private fun RssChannel.toArticles() = items.map { it.toArticle() }
 
 private fun RssItem.toArticle() = Article(
     author = author,
-    id = UUID.randomUUID().toString(),
+    id = link.let {
+        if (it.isNullOrBlank()) UUID.randomUUID().toString() else it
+    },
     image = image,
     link = link,
     pubDate = pubDate?.let { pubDateStringToInstant(it) },
