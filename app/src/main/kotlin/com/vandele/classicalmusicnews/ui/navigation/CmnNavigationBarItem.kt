@@ -13,19 +13,19 @@ sealed class CmnNavigationBarItem(
     val icon: ImageVector,
     val route: String,
 ) {
-    object Feed : CmnNavigationBarItem(
+    data object Feed : CmnNavigationBarItem(
         labelRes = R.string.feed,
         icon = Icons.Rounded.Segment,
         route = FEED_ROUTE,
     )
 
-    object Bookmarks : CmnNavigationBarItem(
+    data object Bookmarks : CmnNavigationBarItem(
         labelRes = R.string.bookmarks,
         icon = Icons.Rounded.Bookmark,
         route = BOOKMARKS_ROUTE,
     )
 
-    object Settings : CmnNavigationBarItem(
+    data object Settings : CmnNavigationBarItem(
         labelRes = R.string.settings,
         icon = Icons.Rounded.Settings,
         route = SETTINGS_ROUTE,

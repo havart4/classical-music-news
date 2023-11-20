@@ -127,9 +127,9 @@ private fun ArticleItem(article: Article, onClick: () -> Unit, onBookmarkClicked
     ) {
         Row(Modifier.fillMaxWidth()) {
             TextColumn(article, Modifier.weight(1f))
+            Spacer(Modifier.width(CmnSpacing.s))
             Column(horizontalAlignment = Alignment.End) {
                 article.image?.let { imageUrl ->
-                    Spacer(Modifier.width(CmnSpacing.m))
                     Image(
                         painter = rememberAsyncImagePainter(imageUrl),
                         contentDescription = null,

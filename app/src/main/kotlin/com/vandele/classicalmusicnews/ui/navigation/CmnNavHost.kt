@@ -8,6 +8,13 @@ import com.vandele.classicalmusicnews.ui.screen.bookmarks.BookmarksScreen
 import com.vandele.classicalmusicnews.ui.screen.detail.DetailScreen
 import com.vandele.classicalmusicnews.ui.screen.feed.FeedScreen
 import com.vandele.classicalmusicnews.ui.screen.settings.SettingsScreen
+import java.net.URLEncoder
+
+const val FEED_ROUTE = "feed"
+const val BOOKMARKS_ROUTE = "bookmarks"
+const val SETTINGS_ROUTE = "settings"
+
+const val ARTICLE_ID_ARG = "articleId"
 
 @Composable
 fun CmnNavHost(navController: NavHostController) {
@@ -16,9 +23,15 @@ fun CmnNavHost(navController: NavHostController) {
         startDestination = FEED_ROUTE,
     ) {
         composable(route = FEED_ROUTE) {
-            FeedScreen(navigateToDetail = { navController.navigate(DETAIL_ROUTE) })
+            FeedScreen(
+                navigateToDetail = { articleId ->
+                    navController.navigate(
+                        "detail/${encodeArgument(articleId)}"
+                    )
+                }
+            )
         }
-        composable(route = DETAIL_ROUTE) {
+        composable(route = "detail/{$ARTICLE_ID_ARG}") {
             DetailScreen()
         }
         composable(route = BOOKMARKS_ROUTE) {
@@ -30,7 +43,4 @@ fun CmnNavHost(navController: NavHostController) {
     }
 }
 
-const val FEED_ROUTE = "feed"
-const val DETAIL_ROUTE = "detail"
-const val BOOKMARKS_ROUTE = "bookmarks"
-const val SETTINGS_ROUTE = "settings"
+private fun encodeArgument(argument: String) = URLEncoder.encode(argument, Charsets.UTF_8.name())
